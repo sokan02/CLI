@@ -3,6 +3,10 @@ project(projekat)
 
 set(CMAKE_CXX_STANDARD 20)
 
+# For clangd
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+
 add_executable(projekat main.cpp
         Commands/Command.h
         Commands/Command.cpp
@@ -32,4 +36,6 @@ add_executable(projekat main.cpp
         Commands/Head.cpp
         Commands/Tr.h
         Commands/Tr.cpp
+        Commands/Batch.h
+        Commands/Batch.cpp
         Commands/streamInterfaces.h)

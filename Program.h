@@ -6,39 +6,40 @@
 #define PROGRAM_H
 
 #include "Commands/Command.h"
-#include <list>
-#include<memory>
-#include <sstream>
 #include <fstream>
+#include <iostream>
+#include <list>
+#include <sstream>
 using namespace std;
+
+struct ParsedLine; // iz Parser.h
 
 class Program {
 public:
-    static Program* getInstance();
-    ~Program();
-    void add(Command* cmd);
+  static Program *getInstance();
+  ~Program();
+  void add(Command *cmd);
 
-    void executeNext();
-    bool hasNext();
+  void executeNext();
+  bool hasNext();
 
-    string getArgument();
-    void setArgument(string arg);
+  string getArgument();
+  void setArgument(string arg);
 
-    void wireSingle(Command* cmd);
+  void wireSingle(Command *cmd);
+  void executeParsedLine(ParsedLine &pl, std::ostream *defaultOut = &std::cout);
 
 protected:
-    Program();
+  Program();
 
 private:
-    list<Command*> commands;
-    list<Command*>::iterator it;
+  list<Command *> commands;
+  list<Command *>::iterator it;
 
-    string argument;
+  string argument;
 
-    std::istringstream textIn;
-    std::ifstream fileIn;
-
-
+  std::istringstream textIn;
+  std::ifstream fileIn;
 };
 
-#endif //PROGRAM_H
+#endif // PROGRAM_H

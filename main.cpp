@@ -1,4 +1,3 @@
-#include "Commands/Command.h"
 #include "Program.h"
 #include "Parser.h"
 #include "Reader.h"
@@ -19,10 +18,9 @@ int main() {
             if (reader->isEof())
                 break;
 
-            Command* cmd = parser->parseCommand(line);
-            if (!cmd) continue;
-            program->add(cmd);
-            program->executeNext();
+            ParsedLine pl = parser->parseLine(line);
+            if (pl.pipeline.empty()) continue;
+            program->executeParsedLine(pl);
         }
         catch (const std::exception& e) {
             cerr << e.what() << endl;

@@ -9,6 +9,7 @@
 class Command {
 public:
         Command(const std::string& arg, const std::string& opt);
+        virtual ~Command() = default;
         virtual void execute() = 0;
 //protected:
     std::string m_arg;

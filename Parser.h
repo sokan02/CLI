@@ -5,18 +5,30 @@
 #ifndef PARSER_H
 #define PARSER_H
 
-
+#include <optional>
 #include <string>
 #include <vector>
-using namespace std;
+
 class Command;
+
+struct ParsedLine {
+  std::vector<Command *> pipeline;    // komande u pipeline-u, redom
+  std::optional<std::string> inFile;  // nakon '<' (ako postoji)
+  std::optional<std::string> outFile; // nakon '>' ili '>>' (ako postoji)
+  bool appendOut = false;             // true ako je '>>' (dodaj na kraj)
+};
 
 class Parser {
 public:
-    Command* parseCommand(string line);
+  // Novi parser: vraća pipeline + redirekcije
+  ParsedLine parseLine(const std::string &line);
 
 private:
-    vector<string> tokenize(string line);
+  bool lexicalCheck(const std::string &line);
+  std::vector<std::string> tokenize(const std::string &line);
+
+  // Pravi jednu komandu od tokena jednog segmenta (između |)
+  Command *buildCommand(const std::vector<std::string> &tokens);
 };
 
-#endif //PARSER_H
+#endif // PARSER_H

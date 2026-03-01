@@ -12,7 +12,7 @@ public:
     Head(const std::string& arg, const std::string& opt);
     void execute() override;
     int getNoRows();
-    std::string getLines(int noLines, std::string text);
+    std::string getLines(int noLines, std::istream& is);
     void setInput(std::istream* i) override { in = i; }
     void setOutput(std::ostream* o) override { out = o; }
 private:
