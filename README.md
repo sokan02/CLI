@@ -1,102 +1,155 @@
-# Unix-like CLI (Command Line Interface)
+# C++ Unix-like CLI
 
 A simplified **Unix-like command line interface implemented in C++**.
 
-This project simulates basic behavior of a shell by parsing commands, executing operations on files and streams, and supporting modular command implementations.
+This project implements a modular CLI with support for command parsing, file manipulation, text processing, stream-based execution, and simple pipelines/redirections. It is designed around a custom parser and a command hierarchy, with each command implemented as a separate class.
 
-It demonstrates concepts such as **command parsing, object-oriented design, file I/O, and stream manipulation in C++**.
-
----
-
-# Overview
-
-A **Command Line Interface (CLI)** allows users to interact with a system by typing commands into a terminal instead of using a graphical interface. It enables efficient execution of tasks and automation of workflows through text-based commands. :contentReference[oaicite:0]{index=0}
-
-This project implements a simplified CLI that supports multiple commands and demonstrates how command execution can be structured using **C++ classes and modular design**.
+The project demonstrates **object-oriented design, parsing, file I/O, stream handling, and terminal-style interaction in C++**.
 
 ---
 
-# Features
+## Features
 
+- Interactive command-line prompt
 - Modular command architecture
-- File input/output support
-- Stream redirection
-- Command parsing
-- Object-oriented command implementation
+- Custom parser for commands, options, and arguments
+- Support for **pipelines**
+- Support for **input/output redirection**
+- File and text processing commands
 - Extensible structure for adding new commands
 
 ---
 
-# Implemented Commands
+## Supported Commands
 
-The CLI supports several Unix-like commands including:
-
-- `echo` – prints text to the output stream
-- `cat` – displays file contents
-- `head` – prints the first lines of a file
-- `tail` – prints the last lines of a file
-- `wc` – counts lines, words, and characters
-- `sort` – sorts lines of text
-
-Commands operate on **standard input/output streams** or files.
-
----
-
-# Architecture
-
-The program is structured using an object-oriented design:
-
-```
-Program
-│
-├── Command (base class)
-│   ├── Echo
-│   ├── Cat
-│   ├── Head
-│   ├── Tail
-│   ├── Sort
-│   └── Wc
-```
-
-Each command inherits from a common **Command base class** and implements its own execution logic.
-
-This design allows new commands to be added easily without modifying the core CLI logic.
+| Command | Description |
+|--------|-------------|
+| `time` | Prints the current time |
+| `date` | Prints the current date |
+| `touch <file>` | Creates a file |
+| `echo "text"` | Prints text |
+| `wc -w <file/text>` | Counts words |
+| `wc -c <file/text>` | Counts characters |
+| `rm <file>` | Removes a file |
+| `truncate <file>` | Empties a file |
+| `prompt "text"` | Changes the CLI prompt |
+| `head -nN <file/text>` | Prints the first `N` lines |
+| `tr <arg> -<option> <with>` | Performs character translation/transformation |
+| `batch <file>` | Executes commands from a batch file |
 
 ---
 
-# Technologies
+## Example Usage
 
-- **C++**
-- Standard Template Library (STL)
-- Object-Oriented Programming
-- File I/O and stream manipulation
-- Linux / terminal development
+```bash
+$ echo "Hello world"
+Hello world
+
+$ touch notes.txt
+
+$ wc -w "hello from cli"
+3
+
+$ head -n3 file.txt
+
+$ prompt "cli>"
+cli> date
+cli> time
+```
+
+### Example with redirection
+
+```bash
+$ echo "sample text" > out.txt
+$ wc -c < out.txt
+```
+
+### Example with pipeline
+
+```bash
+$ echo "abcdef" | tr "abc" -d
+```
 
 ---
 
-# Project Structure
+## Project Architecture
 
-```
+The project is organized around three main parts:
+
+### 1. Parser
+Responsible for:
+- lexical validation
+- tokenization
+- building command objects
+- parsing pipelines and redirections
+
+### 2. Program
+Responsible for:
+- storing commands
+- wiring input/output streams
+- executing single commands and pipelines
+- handling redirected input/output
+
+### 3. Commands
+Each command is implemented as its own class derived from a common base command structure.
+
+---
+
+## Project Structure
+
+```text
 CLI/
-├── Commands/
-│   ├── Cat.cpp
-│   ├── Echo.cpp
-│   ├── Head.cpp
-│   ├── Tail.cpp
-│   ├── Sort.cpp
-│   └── Wc.cpp
-│
+├── CMakeLists.txt
+├── main.cpp
+├── Parser.cpp
+├── Parser.h
 ├── Program.cpp
 ├── Program.h
-├── main.cpp
-└── README.md
+├── Reader.cpp
+├── Reader.h
+├── README.md
+└── Commands/
+    ├── Batch.cpp
+    ├── Batch.h
+    ├── Command.cpp
+    ├── Command.h
+    ├── Date.cpp
+    ├── Date.h
+    ├── Echo.cpp
+    ├── Echo.h
+    ├── Head.cpp
+    ├── Head.h
+    ├── Prompt.cpp
+    ├── Prompt.h
+    ├── Rm.cpp
+    ├── Rm.h
+    ├── Time.cpp
+    ├── Time.h
+    ├── Touch.cpp
+    ├── Touch.h
+    ├── Tr.cpp
+    ├── Tr.h
+    ├── Truncate.cpp
+    ├── Truncate.h
+    ├── Wc.cpp
+    ├── Wc.h
+    └── streamInterfaces.h
 ```
 
 ---
 
-# Compilation
+## Build
 
-Compile the project using a C++ compiler:
+### Using CMake
+
+```bash
+mkdir build
+cd build
+cmake ..
+make
+```
+
+### Or compile manually
 
 ```bash
 g++ *.cpp Commands/*.cpp -o cli
@@ -104,50 +157,53 @@ g++ *.cpp Commands/*.cpp -o cli
 
 ---
 
-# Running
-
-Run the CLI:
+## Run
 
 ```bash
 ./cli
 ```
 
-Example usage:
-
-```
-echo Hello World
-cat file.txt
-head -5 file.txt
-sort file.txt
-wc file.txt
-```
+After launching, the program opens an interactive prompt where commands can be entered one by one.
 
 ---
 
-# Learning Goals
+## Technical Highlights
 
-This project explores:
+This project demonstrates:
 
-- building a **custom command-line interface**
-- designing **modular command execution systems**
-- handling **input/output streams**
-- applying **object-oriented programming in C++**
+- **C++ object-oriented design**
+- **custom command parsing**
+- **file and stream processing**
+- **pipeline execution**
+- **input/output redirection**
+- **modular command implementation**
 
 ---
 
-# Possible Improvements
+## Learning Goals
 
-Future improvements could include:
+The purpose of this project was to explore how a simple shell-like environment can be implemented from scratch, including:
 
-- command piping (`|`)
-- input/output redirection (`>`, `<`)
+- command parsing
+- execution flow
+- stream-based communication between commands
+- reusable class design
+- terminal-style user interaction
+
+---
+
+## Possible Future Improvements
+
+- more Unix-like commands
+- better error reporting
 - command history
-- interactive shell prompt
-- additional Unix commands
+- tab completion
+- environment variables
+- more advanced piping behavior
 
 ---
 
-# Author
+## Author
 
 **Sofija Djeric**
 
